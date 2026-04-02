@@ -1,13 +1,14 @@
 package cn.chatbot.api.test;
 
-
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
+
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -36,7 +37,7 @@ public class ApiTest {
 
         get.addHeader("Cookie", "buvid3=C5E8E156-EFF8-61A7-FBDF-EF87C55C2F0B85699infoc; b_nut=1772352585; _uuid=C23B26103-BD87-101D4-94A4-1C10D77E410A6884858infoc; buvid_fp=19418955853200b0c2d85e2631407045; buvid4=57F1636F-4241-2516-C646-EB0845CFE03786516-026030116-9cMiC3JIQqfiQ3rJ7dbsgQ%3D%3D; DedeUserID=1964509525; DedeUserID__ckMd5=0e9d99f2283e1d2a; theme-tip-show=SHOWED; rpdid=|(um~ku||uRR0J'u~~kJlkYu); theme-avatar-tip-show=SHOWED; SESSDATA=7b9fbdb5%2C1789645572%2Ce831b%2A31CjD2fs1e1jJWe-s7P7A78AWZLqSDPl2N3erI-ebXq-5DnzZZ3cPpwQEKqyNn8ADUR5ISVnVVZkxfZXlpSVhPemplNlpnckFxNUVjZ1RRWDMyNy0tcDFmQ2lHNDY5TWJzVHF6QXNyV3BKMThRek9OVXktUFlicDczMWJMbGlLNzNMWFF1RkIyb3ZnIIEC; bili_jct=2494ba9bf13c4137757ac6b5e26e9707; bsource=search_bing; sid=7u51ce7c; CURRENT_FNVAL=4048; CURRENT_QUALITY=80; hit-dyn-v2=1; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzQ1MjcyNDYsImlhdCI6MTc3NDI2Nzk4NiwicGx0IjotMX0.1LwtIAMR2yY6n9U06utlEIPaFDSQ0YAlq10WLF1K0I4; bili_ticket_expires=1774527186; bp_t_offset_1964509525=1182962657653686272; home_feed_column=4; browser_resolution=821-958; b_lsid=0C72202E_19D1ACD15A5");
 
-        get.addHeader("Content-Type", "application/json;charset=utf-8");
+        get.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
 
         CloseableHttpResponse response = httpClient.execute(get);
@@ -80,4 +81,30 @@ public class ApiTest {
             System.out.println(response.getStatusLine().getStatusCode());
         }
     }
+    @Test
+    public void test_chatZhiPu() throws IOException {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost("https://open.bigmodel.cn/api/paas/v4/chat/completions");
+        post.addHeader("Content-Type","application/json");
+        post.addHeader("Authorization","Bearer d96115fde7174ef69fdea52e6ce8e683.Cr0pFCFGbuHq5XYz");
+
+        String paramJson = "{"
+                + "\"model\":\"glm-4.7\","
+                + "\"messages\":[{\"role\":\"user\",\"content\":\"S帮我写一个java的排序\"}],"
+                + "\"temperature\":0.7"
+                + "}";
+        StringEntity stringEntity = new StringEntity(paramJson, ContentType.create("application/json", "UTF-8"));
+        post.setEntity(stringEntity);
+
+        CloseableHttpResponse response = httpClient.execute(post);
+
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String res = EntityUtils.toString(response.getEntity());
+            System.out.println(res);
+        } else {
+            System.out.println(response.getStatusLine().getStatusCode());
+        }
+    }
+
+
 }

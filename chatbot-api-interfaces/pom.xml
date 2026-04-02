@@ -82,6 +82,12 @@
             <artifactId>chatbot-api-application</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>ai.z.openapi</groupId>
+            <artifactId>zai-sdk</artifactId>
+            <version>0.3.3</version>
+        </dependency>
     </dependencies>
 
     <build>
